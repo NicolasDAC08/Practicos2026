@@ -1,36 +1,18 @@
 <?php
 require_once __DIR__ . '/../config.php';
-require_once RUTA_PRODUCTO;
+require_once RUTA_AUTENTICADOR;
+require_once RUTA_USUARIO;
 
-class GestorProductos{
-    private $Producto;
-    public function __construct(){
-        $this->Producto = new Producto();
-    }
+$auth = new Autenticacion();
 
-    public function listar(){
-        return $this->Producto->listarprodutos();
-    }
+Autenticacion::exigirSesion();
 
-    public function buscar($id){
-        return $this->Producto->buscarPorId($id);
-    }
+$usuario = new Usuario();
 
-    public function guardar($id, $nombre, $precio, $stock){
-        $nombre = trim($nombre);
-        if ($nombre === '') {
-            return false;
-        }
-        if ($precio < 0 || $stock < 0) {
-            return false;
-        }
-        if ($id === null) {
-            return $this->Producto->ingresar($nombre, $precio, $stock);
-        }
-        return $this->Producto->actualizar($id, $nombre, $precio, $stock);
-    }
-
-    public function eliminar($id){
-        return $this->Producto->eliminar($id);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['cerrar_sesion'])) {
+        $auth->cerrarsesion();
+        header("Location: " . RUTA_VISTA . "/login.php");
+        exit();
     }
 }

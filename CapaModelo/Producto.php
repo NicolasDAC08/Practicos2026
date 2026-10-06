@@ -30,24 +30,21 @@ class producto {
         return $productos;
     }
 
-        public function ingresar($nombre, $precio, $stock)
-    {
+    public function ingresar($nombre, $precio, $stock){
         $sql = "INSERT INTO productos (nombre, precio, stock) VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("sdi", $nombre, $precio, $stock);
         return $stmt->execute();
     }
 
-    public function actualizar($id, $nombre, $precio, $stock)
-    {
+    public function actualizar($id, $nombre, $precio, $stock){
         $sql = "UPDATE productos SET nombre = ?, precio = ?, stock = ? WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("sdii", $nombre, $precio, $stock, $id);
         return $stmt->execute();
     }
 
-    public function eliminar($id)
-    {
+    public function eliminar($id){
         $sql = "DELETE FROM productos WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
